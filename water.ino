@@ -26,7 +26,7 @@ void loop() {
       digitalWrite(MOS, HIGH);            // врубить
     }
   } else {                                // если помпа включена
-    if (((long)mainTimer - myTimer > WORK) && (analogRead(volumePin) < DRY)) {
+    if (((long)mainTimer - myTimer > WORK) || (analogRead(volumePin) > DRY)) {
       myTimer = mainTimer;                // сброс
       state = false;                      // флаг на выкл
       digitalWrite(MOS, LOW);             // вырубить
