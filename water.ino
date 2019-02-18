@@ -1,13 +1,13 @@
-#define WET 350
-#define DRY 700
+#define WET 400
+#define DRY 900
 #define volumePin A0
 #define MOS 5
 #define PERIOD 259200
-#define WORK 30
+#define WORK 60
+
 
 uint32_t mainTimer, myTimer;
 boolean state = false;
-
 void setup() {
   pinMode(volumePin, INPUT);
   Serial.begin(9600);
@@ -16,7 +16,9 @@ void setup() {
 }
 
 
-void loop() {
+void loop() { 
+  Serial.println(analogRead(volumePin));
+  delay(100);
   mainTimer++;
     if (!state) {                           // если помпа не включена
     if ((long)mainTimer - myTimer > PERIOD) {   // таймер периода
@@ -26,7 +28,7 @@ void loop() {
       digitalWrite(MOS, HIGH);            // врубить
     }
   } else {                                // если помпа включена
-    if (((long)mainTimer - myTimer > WORK) || (analogRead(volumePin) > DRY)) {
+    if (((long)mainTimer - myTimer > WORK) || (analogRead(volumePin) < DRY)) {
       myTimer = mainTimer;                // сброс
       state = false;                      // флаг на выкл
       digitalWrite(MOS, LOW);             // вырубить
